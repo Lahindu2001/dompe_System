@@ -1,8 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
+
 const userRouter = require("./Routes/UserRoutes");
 const inventoryRouter = require("./Routes/InventoryRoutes");
 const productRouter = require("./Routes/ProductRoutes");
+
+
 const path = require("path");
 const fs = require("fs");
 const cors = require("cors");
@@ -29,9 +32,11 @@ app.use("/products", productRouter);
 
 // ------------------- DATABASE -------------------
 mongoose
-  .connect("mongodb+srv://admin:5ujIqBeOwJYjq1hM@cluster1.lmzaxue.mongodb.net/")
+  .connect("mongodb+srv://adminSelfme:P40YIFy04Am8rnDe@cluster0.4bp3tta.mongodb.net/sho")
   .then(() => console.log("✅ Connected to MongoDB"))
   .then(() => {
     app.listen(5000, () => console.log("🚀 Server running on port 5000"));
   })
   .catch((err) => console.log(err));
+
+

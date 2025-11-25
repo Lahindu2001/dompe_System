@@ -11,7 +11,7 @@ function Nav() {
             to="/Main"
             className={({ isActive }) => `home-a ${isActive ? 'active' : ''}`}
           >
-            <h1>Admin Home</h1>
+            <h1>Home</h1>
           </NavLink>
         </li>
         <li className="home-li">
@@ -27,7 +27,7 @@ function Nav() {
             to="/sub2"
             className={({ isActive }) => `home-a ${isActive ? 'active' : ''}`}
           >
-            <h1>Inventory Management</h1>
+            <h1>add the monthly payment</h1>
           </NavLink>
         </li>
         <li className="home-li">
@@ -36,7 +36,7 @@ function Nav() {
             className={({ isActive }) => `home-a ${isActive ? 'active' : ''}`}
           >
             
-            <h1>Product Management</h1>
+            <h1>test</h1>
           </NavLink>
         </li>
       </ul>

@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import "./App.css";
 
 // ------------------- Import Components -------------------
-import Users from "./Components/sub2/Users";
 import AdminPanel from "./Components/Main/Admin";
+import Users from "./Components/sub2/Users";
 import InventoryManage from "./Components/sub1/InventoryMange";
 import ProductManager from "./Components/sub3/ProductManager";
 

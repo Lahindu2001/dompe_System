@@ -21,14 +21,14 @@ function Admin() {
           </div>
           <div className="card">
           <Link to="/sub2" className="activehome">
-            <h2>test2</h2>
-            <p>Track and update solar panels, wires & safety products.</p>
+            <h2>add the monthly payment</h2>
+            <p>Track and update</p>
             </Link>
           </div>
           <div className="card">
            <Link to="/sub3" className="activehome">
-              <h2>test3</h2>
-              <p>Create and modify solar packages for customers.</p>
+              <h2>test</h2>
+              <p>test</p>
             </Link>
           </div>
           

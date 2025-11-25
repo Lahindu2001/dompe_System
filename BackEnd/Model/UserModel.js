@@ -1,17 +1,24 @@
 const mongoose = require("mongoose");
+const Counter = require("./CounterModel");
 const Schema = mongoose.Schema;
-
 const userSchema = new Schema({
-    user_number: { type: String, required: true },  
-    username: { type: String, required: true },     
-    password: { type: String, required: true },     
-    full_name: { type: String, required: true },     
-    email: { type: String, required: true },         
-    phone: { type: String, required: true },         
-    address: { type: String, required: true },       
-    role: { type: String, enum: ['Admin','Inventory Manager','Finance Manager','Technician','Customer'], required: true },
-    status: { type: String, enum: ['Active','Inactive'], default: 'Active' },
-    created_at: { type: Date, default: Date.now }    
+    reg_no: { type: Number, unique: true },
+    shop_owner_name: { type: String, required: true },
+    shop_name: { type: String, required: true },
+    phone_number: { type: String, required: true },
+    created_at: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model("UserModel", userSchema);
+userSchema.pre('save', async function(next) {
+    if (!this.reg_no) {
+        const counter = await Counter.findByIdAndUpdate(
+            { _id: 'reg_no' },
+            { $inc: { seq: 1 } },
+            { new: true, upsert: true }
+        );
+        this.reg_no = counter.seq;
+    }
+    next();
+});
+
+module.exports = mongoose.model("RegShopss", userSchema);

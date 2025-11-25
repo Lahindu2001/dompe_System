@@ -1,5 +1,4 @@
 const User = require("../Model/UserModel");
-
 // Get all users
 const getAllUsers = async (req, res, next) => {
     let users;
@@ -9,23 +8,21 @@ const getAllUsers = async (req, res, next) => {
         console.log(err);
     }
     if (!users) return res.status(404).json({ message: "Users not found" });
-    return res.status(200).json({ users });
+    return res.status(200).json({ shops: users });
 };
-
 // Insert user
 const addUsers = async (req, res, next) => {
-    const { user_number, username, password, full_name, email, phone, address, role, status } = req.body;
+    const { shop_owner_name, shop_name, phone_number } = req.body;
     let user;
     try {
-        user = new User({ user_number, username, password, full_name, email, phone, address, role, status });
+        user = new User({ shop_owner_name, shop_name, phone_number });
         await user.save();
     } catch (err) {
         console.log(err);
     }
     if (!user) return res.status(404).json({ message: "Unable to add user" });
-    return res.status(200).json({ user });
+    return res.status(200).json({ shop: user });
 };
-
 // Get user by ID
 const getbyId = async (req, res, next) => {
     const id = req.params.id;
@@ -36,18 +33,17 @@ const getbyId = async (req, res, next) => {
         console.log(err);
     }
     if (!user) return res.status(404).json({ message: "User not found" });
-    return res.status(200).json({ user });
+    return res.status(200).json({ shop: user });
 };
-
 // Update user
 const updateUser = async (req, res, next) => {
     const id = req.params.id;
-    const { user_number, username, password, full_name, email, phone, address, role, status } = req.body;
+    const { shop_owner_name, shop_name, phone_number } = req.body;
     let user;
     try {
         user = await User.findByIdAndUpdate(
             id,
-            { user_number, username, password, full_name, email, phone, address, role, status },
+            { shop_owner_name, shop_name, phone_number },
             { new: true }
         );
     } catch (err) {
@@ -55,9 +51,8 @@ const updateUser = async (req, res, next) => {
         return res.status(500).json({ message: "Server error while updating user" });
     }
     if (!user) return res.status(404).json({ message: "Unable to update user detail" });
-    return res.status(200).json({ user });
+    return res.status(200).json({ shop: user });
 };
-
 // Delete user
 const deleteUser = async (req, res, next) => {
     const id = req.params.id;
@@ -68,9 +63,8 @@ const deleteUser = async (req, res, next) => {
         console.log(err);
     }
     if (!user) return res.status(404).json({ message: "Unable to delete user" });
-    return res.status(200).json({ user });
+    return res.status(200).json({ shop: user });
 };
-
 exports.getAllUsers = getAllUsers;
 exports.addUsers = addUsers;
 exports.getbyId = getbyId;
