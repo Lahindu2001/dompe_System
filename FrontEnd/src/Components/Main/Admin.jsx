@@ -17,18 +17,17 @@ function Admin() {
             <h2>Add the Shop to the System</h2>
             <p>add the detail</p>
           </Link>
-            
           </div>
           <div className="card">
-          <Link to="/sub2" className="activehome">
+          <Link to="/MonthlyPayment" className="activehome">
             <h2>add the monthly payment</h2>
             <p>Track and update</p>
             </Link>
           </div>
           <div className="card">
-           <Link to="/sub3" className="activehome">
-              <h2>test</h2>
-              <p>test</p>
+           <Link to="/FundsManagement" className="activehome">
+              <h2>Monthly Payment</h2>
+              <p>show all</p>
             </Link>
           </div>
           

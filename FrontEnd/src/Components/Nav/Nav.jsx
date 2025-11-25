@@ -8,18 +8,28 @@ function Nav() {
       <ul className="home-ul">
         <li className="home-li">
           <NavLink
+            to="#"
+            className={({ isActive }) => `home-a ${isActive ? 'active' : ''}`}
+          >
+            <h1>Home</h1>
+          </NavLink>
+        </li>
+        
+        <li className="home-li">
+          <NavLink
             to="/Main"
             className={({ isActive }) => `home-a ${isActive ? 'active' : ''}`}
           >
             <h1>Home</h1>
           </NavLink>
         </li>
+        
         <li className="home-li">
           <NavLink
             to="/sub1"
             className={({ isActive }) => `home-a ${isActive ? 'active' : ''}`}
           >
-            <h1>Add the new One</h1>
+            <h1>add the shop</h1>
           </NavLink>
         </li>
         <li className="home-li">
@@ -32,11 +42,11 @@ function Nav() {
         </li>
         <li className="home-li">
           <NavLink
-            to="/sub3"
+            to="/FundsManagement"
             className={({ isActive }) => `home-a ${isActive ? 'active' : ''}`}
           >
             
-            <h1>test</h1>
+            <h1>see all detail</h1>
           </NavLink>
         </li>
       </ul>

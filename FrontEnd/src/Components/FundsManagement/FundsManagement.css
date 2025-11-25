@@ -1,0 +1,326 @@
+/* FundsManagement.css (New file) - Adapted from Users.css */
+/* Main Container */
+#funds-section {
+  padding: 20px;
+  padding-left: 300px;
+  background: #f8f9fa;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+/* Title Section */
+#funds-section .title-container {
+  text-align: center;
+  margin: 20px 0 30px 0;
+  padding: 30px 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  color: #333;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #dee2e6;
+}
+#funds-section .Title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 0;
+  color: #495057;
+  letter-spacing: 0.5px;
+}
+#funds-section .subtitle {
+  font-size: 1rem;
+  margin: 10px 0 0 0;
+  color: #6c757d;
+  font-weight: 400;
+}
+/* Professional Download Section */
+#funds-section .professional-section {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 25px;
+  margin: 25px 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+#funds-section .professional-section h3 {
+  color: #495057;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#funds-section .professional-section p {
+  color: #6c757d;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+/* Field Checkboxes */
+#funds-section .field-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 25px;
+}
+#funds-section .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 400;
+}
+#funds-section .checkbox-label:hover {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+#funds-section .checkbox-label input[type="checkbox"] {
+  margin: 0;
+  accent-color: #007bff;
+}
+#funds-section .checkbox-label input[type="checkbox"]:checked + span {
+  color: #007bff;
+  font-weight: 500;
+}
+#funds-section .checkbox-label span {
+  font-size: 0.9rem;
+  color: #495057;
+}
+/* Download Buttons */
+#funds-section .download-buttons {
+  text-align: center;
+}
+#funds-section .download-all-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.25);
+}
+#funds-section .download-all-btn:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+#funds-section .download-note {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-top: 12px;
+  line-height: 1.4;
+}
+/* Enhanced Search Bar */
+#funds-section .search-bar {
+  margin: 20px 0;
+}
+#funds-section .search-bar input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+#funds-section .search-bar input:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+#funds-section .search-bar input::placeholder {
+  color: #adb5bd;
+  font-weight: 400;
+}
+/* Enhanced Table */
+#funds-section .funds-table-container {
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
+  border: 1px solid #dee2e6;
+}
+#funds-section .table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+#funds-section .table-user-count {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #495057;
+}
+#funds-section .filtered-count {
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-style: italic;
+}
+#funds-section .funds-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+#funds-section .funds-table th {
+  background: #f8f9fa;
+  color: #495057;
+  padding: 12px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #dee2e6;
+}
+#funds-section .funds-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #dee2e6;
+  vertical-align: middle;
+  transition: background-color 0.2s ease;
+}
+#funds-section .funds-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+#funds-section .funds-table tbody tr:nth-child(even) {
+  background-color: #fafbfc;
+}
+/* Action Buttons */
+#funds-section .actions-cell {
+  text-align: center;
+  white-space: nowrap;
+  padding: 8px !important;
+}
+#funds-section .action-btn {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  padding: 8px;
+  margin: 0 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+}
+#funds-section .action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+#funds-section .download-btn:hover {
+  background: #d1ecf1;
+  border-color: #17a2b8;
+  color: #17a2b8;
+}
+/* No Users Message */
+#funds-section .no-users-message {
+  text-align: center;
+  padding: 40px;
+  color: #6c757d;
+  background: #f8f9fa;
+  margin: 20px;
+  border-radius: 8px;
+  border: 1px dashed #dee2e6;
+}
+#funds-section .no-users-message p {
+  font-size: 1.1rem;
+  margin: 0 0 15px 0;
+  font-weight: 400;
+}
+#funds-section .clear-search-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+#funds-section .clear-search-btn:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+  #funds-section .Title {
+    font-size: 2rem;
+  }
+  #funds-section {
+    padding: 15px;
+  }
+  #funds-section .Title {
+    font-size: 1.8rem;
+  }
+  #funds-section .subtitle {
+    font-size: 0.95rem;
+  }
+  #funds-section .field-checkboxes {
+    grid-template-columns: 1fr;
+  }
+  #funds-section .table-header {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  #funds-section .funds-table {
+    font-size: 0.8rem;
+  }
+  #funds-section .funds-table th,
+  #funds-section .funds-table td {
+    padding: 8px 6px;
+  }
+  #funds-section .action-btn {
+    font-size: 0.9rem;
+    padding: 6px;
+    width: 32px;
+    height: 32px;
+  }
+}
+@media (max-width: 480px) {
+  #funds-section .Title {
+    font-size: 1.6rem;
+  }
+  #funds-section .professional-section {
+    padding: 20px;
+  }
+  #funds-section .funds-table {
+    font-size: 0.75rem;
+  }
+  #funds-section .funds-table th,
+  #funds-section .funds-table td {
+    padding: 6px 4px;
+  }
+}
+/* Print Styles */
+@media print {
+  #funds-section .download-options,
+  #funds-section .search-bar,
+  #funds-section .action-btn {
+    display: none !important;
+  }
+  #funds-section {
+    background: white;
+  }
+  #funds-section .title-container {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+  #funds-section .funds-table th {
+    background: #f8f9fa !important;
+    color: black !important;
+  }
+}

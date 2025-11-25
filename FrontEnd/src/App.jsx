@@ -5,10 +5,8 @@ import "./App.css";
 // ------------------- Import Components -------------------
 import AdminPanel from "./Components/Main/Admin";
 import Users from "./Components/sub2/Users";
-import InventoryManage from "./Components/sub1/InventoryMange";
-import ProductManager from "./Components/sub3/ProductManager";
 import MonthlyPayment from "./Components/MonthlyPayment/MonthlyPayment";
-
+import FundsManagement from "./Components/FundsManagement/FundsManagement";
 
 function App() {
   return (
@@ -27,11 +25,8 @@ function App() {
           {/* Monthly Payment Management */}
           <Route path="/MonthlyPayment" element={<MonthlyPayment />} />
 
-          {/* Inventory Management */}
-          <Route path="/sub2" element={<InventoryManage />} />
-
-          {/* Product Management */}
-          <Route path="/sub3" element={<ProductManager />} />
+  {/* Monthly Payment Management */}
+          <Route path="/FundsManagement" element={<FundsManagement />} />
 
           {/* Catch-all Redirect */}
           <Route path="*" element={<Navigate to="/" replace />} />
