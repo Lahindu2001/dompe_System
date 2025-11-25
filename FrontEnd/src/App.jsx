@@ -7,6 +7,8 @@ import AdminPanel from "./Components/Main/Admin";
 import Users from "./Components/sub2/Users";
 import InventoryManage from "./Components/sub1/InventoryMange";
 import ProductManager from "./Components/sub3/ProductManager";
+import MonthlyPayment from "./Components/MonthlyPayment/MonthlyPayment";
+
 
 function App() {
   return (
@@ -21,6 +23,9 @@ function App() {
 
           {/* User Management */}
           <Route path="/sub1" element={<Users />} />
+
+          {/* Monthly Payment Management */}
+          <Route path="/MonthlyPayment" element={<MonthlyPayment />} />
 
           {/* Inventory Management */}
           <Route path="/sub2" element={<InventoryManage />} />

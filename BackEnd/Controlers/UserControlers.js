@@ -65,6 +65,21 @@ const deleteUser = async (req, res, next) => {
     if (!user) return res.status(404).json({ message: "Unable to delete user" });
     return res.status(200).json({ shop: user });
 };
+
+const getByRegNo = async (req, res, next) => {
+    const reg_no = parseInt(req.params.reg_no);
+    let user;
+    try {
+        user = await User.findOne({ reg_no });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ message: "Server error while fetching user" });
+    }
+    if (!user) return res.status(404).json({ message: "User not found" });
+    return res.status(200).json({ shop: user });
+};
+
+exports.getByRegNo = getByRegNo;
 exports.getAllUsers = getAllUsers;
 exports.addUsers = addUsers;
 exports.getbyId = getbyId;

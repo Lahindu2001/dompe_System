@@ -2,8 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 const userRouter = require("./Routes/UserRoutes");
-const inventoryRouter = require("./Routes/InventoryRoutes");
-const productRouter = require("./Routes/ProductRoutes");
+const paymentRouter = require("./Routes/PaymentRoutes");
+
 
 
 const path = require("path");
@@ -27,8 +27,7 @@ app.use("/uploads", express.static(uploadDir));
 
 // ------------------- ROUTES -------------------
 app.use("/users", userRouter);
-app.use("/inventory", inventoryRouter);
-app.use("/products", productRouter);
+app.use("/payments", paymentRouter);
 
 // ------------------- DATABASE -------------------
 mongoose

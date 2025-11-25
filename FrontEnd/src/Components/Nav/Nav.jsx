@@ -24,7 +24,7 @@ function Nav() {
         </li>
         <li className="home-li">
           <NavLink
-            to="/sub2"
+            to="/MonthlyPayment"
             className={({ isActive }) => `home-a ${isActive ? 'active' : ''}`}
           >
             <h1>add the monthly payment</h1>
