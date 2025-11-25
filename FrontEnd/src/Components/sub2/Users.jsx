@@ -3,7 +3,10 @@ import Nav from '../Nav/Nav';
 import axios from 'axios';
 import jsPDF from 'jspdf';
 import './Users.css';
+
 const URL = 'http://localhost:5000/users';
+
+
 function Users() {
   // ------------------- STATES -------------------
   const [users, setUsers] = useState([]);

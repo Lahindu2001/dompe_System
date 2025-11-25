@@ -1,33 +1,105 @@
-/* src/Components/Nav/Nav.css */
+/* src/Components/Nav/Nav.css - Updated for Left Sidebar Admin Dashboard Style */
 
 .home-ul {
   list-style-type: none;
   margin: 0;
-  padding: 10px;
-  background-color: #333;
+  padding: 0;
+  background-color: #2c3e50;
   display: flex;
-  justify-content: space-around;
-  width: 100%;
+  flex-direction: column;
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
   box-sizing: border-box;
+  overflow-y: auto;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
 .home-li {
-  display: inline-block;
+  width: 100%;
+  border-bottom: 1px solid #34495e;
 }
 
 .home-a {
-  color: white;
+  color: #ecf0f1;
   text-decoration: none;
-  font-size: 20px;
-  padding: 10px 20px;
-  display: block;
+  font-size: 16px;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.home-a h1 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
 .home-a:hover {
-  color: #ffcc00;
+  background-color: #34495e;
+  color: #3498db;
+  transform: translateX(5px);
 }
 
 .active {
-  background-color: #555;
-  border-radius: 5px;
+  background-color: #3498db;
+  color: #ffffff;
+}
+
+.active h1 {
+  color: #ffffff;
+}
+
+/* Optional: Add a top header for the sidebar if needed */
+.home-ul::before {
+  content: 'Admin Dashboard';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #1a252f;
+  color: #ecf0f1;
+  padding: 15px 20px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 1px solid #34495e;
+}
+
+/* Adjust main content to account for sidebar (add this to your main app container) */
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Responsive: Hide sidebar on small screens or add toggle */
+@media (max-width: 768px) {
+  .home-ul {
+    transform: translateX(-100%);
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+  
+  /* Add a toggle button if needed */
+  .sidebar-toggle {
+    display: block;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
 }
