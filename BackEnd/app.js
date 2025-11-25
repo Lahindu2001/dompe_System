@@ -1,15 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
 const userRouter = require("./Routes/UserRoutes");
 const paymentRouter = require("./Routes/PaymentRoutes");
-
-
-
+const fundsRouter = require("./Routes/FundsRoutes"); // New import
 const path = require("path");
 const fs = require("fs");
 const cors = require("cors");
-
 const app = express();
 
 // ------------------- MIDDLEWARE -------------------
@@ -28,6 +24,7 @@ app.use("/uploads", express.static(uploadDir));
 // ------------------- ROUTES -------------------
 app.use("/users", userRouter);
 app.use("/payments", paymentRouter);
+app.use("/funds", fundsRouter); // New route
 
 // ------------------- DATABASE -------------------
 mongoose
@@ -37,5 +34,3 @@ mongoose
     app.listen(5000, () => console.log("🚀 Server running on port 5000"));
   })
   .catch((err) => console.log(err));
-
-

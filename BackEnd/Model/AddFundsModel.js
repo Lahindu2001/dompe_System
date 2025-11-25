@@ -20,7 +20,8 @@ const addFundsSchema = new Schema({
     cash: { 
         type: Number, 
         required: [true, 'Cash amount is required'],
-        min: [0, 'Cash amount must be 0 or greater']
+        min: [500, 'Cash amount must be 500 or greater']
+        
     },
     created_at: { 
         type: Date, 

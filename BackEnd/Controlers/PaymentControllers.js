@@ -16,8 +16,8 @@ const addPayment = async (req, res, next) => {
         if (!year || year < 2000) {
             return res.status(400).json({ message: "Year must be 2000 or later" });
         }
-        if (cash === undefined || cash < 0) {
-            return res.status(400).json({ message: "Cash amount must be 0 or greater" });
+        if (cash === undefined || cash < 500) {
+            return res.status(400).json({ message: "Cash amount must be 500 or greater" });
         }
 
         // Verify user exists
@@ -46,4 +46,30 @@ const addPayment = async (req, res, next) => {
     return res.status(200).json({ payment });
 };
 
+const getPaymentsByRegNo = async (req, res, next) => {
+    const reg_no = parseInt(req.params.reg_no);
+    let payments;
+    try {
+        // Validate reg_no
+        if (isNaN(reg_no) || reg_no <= 0) {
+            return res.status(400).json({ message: "Valid Reg. No is required" });
+        }
+        // Verify user exists
+        const user = await User.findOne({ reg_no });
+        if (!user) {
+            return res.status(404).json({ message: "Shop not found" });
+        }
+        // Fetch payments for this reg_no, sorted by created_at descending
+        payments = await AddFunds.find({ reg_no }).sort({ created_at: -1 });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ message: "Server error while fetching payments" });
+    }
+    if (!payments || payments.length === 0) {
+        return res.status(200).json({ payments: [] }); // Return empty array, not 404
+    }
+    return res.status(200).json({ payments });
+};
+
 exports.addPayment = addPayment;
+exports.getPaymentsByRegNo = getPaymentsByRegNo;
