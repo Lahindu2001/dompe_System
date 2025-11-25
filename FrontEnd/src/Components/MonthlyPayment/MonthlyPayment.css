@@ -1,105 +1,122 @@
-/* MonthlyPayment.css - Updated for better error display and loading */
+/* Main Container */
 #monthly-payment-section {
-  padding: 20px 20px 20px 270px;  /* Adjusted for sidebar width */
-  background: #f8f9fa;
+  padding: 20px;
+  padding-left: 300px;
+  background: #f5f5f5;
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
 }
 
+/* Title Section */
 #monthly-payment-section .title-container {
   text-align: center;
   margin: 0 0 30px 0;
   padding: 30px 20px;
   background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd;
 }
 
 #monthly-payment-section .Title {
   font-size: 2.5rem;
   font-weight: 600;
   margin: 0 0 5px 0;
-  color: #495057;
+  color: #2c3e50;
 }
 
 #monthly-payment-section .subtitle {
   font-size: 1rem;
   margin: 0;
-  color: #6c757d;
+  color: #7f8c8d;
 }
 
+/* Content Containers */
 #monthly-payment-section .search-container,
 #monthly-payment-section .user-details,
+#monthly-payment-section .payments-history,
 #monthly-payment-section .add-payment-container {
   background: #ffffff;
-  border: 1px solid #dee2e6;
+  border: 1px solid #ddd;
   border-radius: 8px;
   padding: 25px;
   margin-bottom: 25px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-#monthly-payment-section .payments-history {
-  background: #ffffff;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  padding: 25px;
-  margin-bottom: 25px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-#monthly-payment-section .payments-history {
-  margin: 20px 0;
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 8px;
-}
-
-#monthly-payment-section .payments-history h3 {
-  color: #333;
-  margin-bottom: 10px;
-}
-
+/* Section Headings */
 #monthly-payment-section h3 {
-  color: #495057;
+  color: #2c3e50;
   margin: 0 0 15px 0;
   font-weight: 600;
+  font-size: 1.3rem;
   display: flex;
   align-items: center;
   gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #3498db;
 }
 
+/* Search Header with Range Info - NEW STYLES */
+#monthly-payment-section .search-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+#monthly-payment-section .reg-range-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #e8f4f8;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #3498db;
+}
+
+#monthly-payment-section .range-label {
+  font-size: 0.85rem;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+#monthly-payment-section .range-value {
+  font-size: 0.95rem;
+  color: #3498db;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Search Form */
 #monthly-payment-section .search-form {
   display: flex;
   gap: 10px;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 #monthly-payment-section .search-form input {
   flex: 1;
   padding: 12px 16px;
-  border: 1px solid #ced4da;
+  border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 1rem;
   background: #fff;
+  transition: border-color 0.2s ease;
 }
 
 #monthly-payment-section .search-form input:focus {
   outline: none;
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-#monthly-payment-section .search-form input:disabled {
-  background: #f8f9fa;
-  cursor: not-allowed;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
 #monthly-payment-section .search-btn {
-  background: #007bff;
+  background: #3498db;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -109,80 +126,114 @@
   transition: background 0.2s ease;
 }
 
-#monthly-payment-section .search-btn:hover:not(:disabled) {
-  background: #0056b3;
-}
-
-#monthly-payment-section .search-btn:disabled {
-  background: #6c757d;
-  cursor: not-allowed;
-}
-
-#monthly-payment-section .error-message {
-  color: #dc3545;
-  margin: 10px 0 0 0;
-  font-size: 0.9rem;
-  background: #f8d7da;
-  padding: 8px 12px;
-  border-radius: 4px;
-  border-left: 4px solid #dc3545;
-}
-
-#monthly-payment-section .success-message {
-  color: #155724;
-  margin: 10px 0 0 0;
-  font-size: 0.9rem;
-  background: #d4edda;
-  padding: 8px 12px;
-  border-radius: 4px;
-  border-left: 4px solid #28a745;
-}
-
-#monthly-payment-section .details-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  margin-bottom: 15px;
-}
-
-#monthly-payment-section .detail-item {
-  padding: 10px;
-  background: #f8f9fa;
-  border-radius: 4px;
-  font-size: 0.95rem;
-  border: 1px solid #dee2e6;
+#monthly-payment-section .search-btn:hover {
+  background: #2980b9;
 }
 
 #monthly-payment-section .clear-search-btn {
-  background: #dc3545;
+  background: #e74c3c;
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  padding: 10px 20px;
+  border-radius: 6px;
   cursor: pointer;
-  margin-left: 10px;
-}
-
-#monthly-payment-section .month-checkbox.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: #e9ecef !important;
-  border-color: #adb5bd !important;
-}
-
-#monthly-payment-section .month-checkbox.disabled:hover {
-  background: #e9ecef !important;
-  border-color: #adb5bd !important;
-}
-
-#monthly-payment-section .month-checkbox input:disabled {
-  accent-color: #6c757d;
+  font-weight: 500;
+  transition: background 0.2s ease;
 }
 
 #monthly-payment-section .clear-search-btn:hover {
-  background: #c82333;
+  background: #c0392b;
 }
 
+/* Messages */
+#monthly-payment-section .error {
+  color: #e74c3c;
+  margin: 10px 0;
+  padding: 10px 12px;
+  background: #fadbd8;
+  border-radius: 4px;
+  border-left: 4px solid #e74c3c;
+  font-size: 0.95rem;
+}
+
+#monthly-payment-section .success {
+  color: #27ae60;
+  margin: 10px 0;
+  padding: 10px 12px;
+  background: #d5f4e6;
+  border-radius: 4px;
+  border-left: 4px solid #27ae60;
+  font-size: 0.95rem;
+}
+
+/* User Details Grid */
+#monthly-payment-section .details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+#monthly-payment-section .detail-item {
+  padding: 12px 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  border: 1px solid #ddd;
+}
+
+#monthly-payment-section .detail-item strong {
+  color: #2c3e50;
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Payment History Table */
+#monthly-payment-section .payments-history p {
+  margin: 0 0 15px 0;
+  font-size: 1.1rem;
+}
+
+#monthly-payment-section .payments-history p strong {
+  color: #2c3e50;
+}
+
+#monthly-payment-section .payments-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+#monthly-payment-section .payments-table th {
+  background: #34495e;
+  color: #ffffff;
+  padding: 12px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #2c3e50;
+}
+
+#monthly-payment-section .payments-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e9ecef;
+  color: #495057;
+}
+
+#monthly-payment-section .payments-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+#monthly-payment-section .payments-table tbody tr:nth-child(even) {
+  background-color: #fafbfc;
+}
+
+/* Payment Form */
 #monthly-payment-section .payment-form {
   display: grid;
   gap: 20px;
@@ -191,35 +242,44 @@
 #monthly-payment-section .form-group {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
 }
 
 #monthly-payment-section .form-group label {
   font-weight: 500;
-  color: #495057;
-  font-size: 0.9rem;
+  color: #2c3e50;
+  font-size: 0.95rem;
 }
 
 #monthly-payment-section .form-group input,
 #monthly-payment-section .form-group select {
-  padding: 10px 12px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 0.95rem;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
   background: #fff;
+  transition: border-color 0.2s ease;
 }
 
 #monthly-payment-section .form-group input:focus,
 #monthly-payment-section .form-group select:focus {
   outline: none;
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
+#monthly-payment-section .form-group small {
+  color: #7f8c8d;
+  font-style: italic;
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+/* Months Grid (Calendar Style) */
 #monthly-payment-section .months-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
   margin-top: 10px;
 }
 
@@ -227,14 +287,15 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 12px 14px;
   background: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   user-select: none;
+  font-weight: 400;
 }
 
 #monthly-payment-section .month-checkbox:hover {
@@ -245,25 +306,40 @@
 #monthly-payment-section .month-checkbox.selected {
   background: #d1ecf1;
   border-color: #17a2b8;
+  font-weight: 500;
 }
 
-#monthly-payment-section .month-checkbox input {
+#monthly-payment-section .month-checkbox.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #e9ecef;
+  border-color: #ced4da;
+}
+
+#monthly-payment-section .month-checkbox.disabled:hover {
+  background: #e9ecef;
+  border-color: #ced4da;
+}
+
+#monthly-payment-section .month-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
   margin: 0;
-  accent-color: #007bff;
+  accent-color: #3498db;
+  cursor: pointer;
 }
 
-#monthly-payment-section .form-group small {
-  color: #6c757d;
-  font-style: italic;
-  font-size: 0.8rem;
-  margin-top: 5px;
+#monthly-payment-section .month-checkbox input:disabled {
+  cursor: not-allowed;
+  accent-color: #6c757d;
 }
 
+/* Submit Button */
 #monthly-payment-section .submit-btn {
-  background: #28a745;
+  background: #27ae60;
   color: white;
   border: none;
-  padding: 12px 24px;
+  padding: 14px 28px;
   border-radius: 6px;
   font-size: 1rem;
   font-weight: 500;
@@ -272,59 +348,233 @@
   align-self: flex-start;
 }
 
-#monthly-payment-section .submit-btn:hover:not(:disabled) {
-  background: #218838;
-  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.25);
+#monthly-payment-section .submit-btn:hover {
+  background: #229954;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(39, 174, 96, 0.3);
 }
 
-#monthly-payment-section .submit-btn:disabled {
-  background: #6c757d;
-  cursor: not-allowed;
+#monthly-payment-section .submit-btn:active {
+  transform: translateY(0);
 }
 
+/* No User Message */
 #monthly-payment-section .no-user {
   text-align: center;
-  color: #6c757d;
+  color: #7f8c8d;
   font-style: italic;
-  padding: 20px;
+  padding: 30px 20px;
   background: #f8f9fa;
   border-radius: 8px;
   margin: 20px 0;
+  border: 2px dashed #ddd;
 }
 
-#monthly-payment-section .payments-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
+/* Payment History Chart */
+#monthly-payment-section .payments-history .chart-section {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  margin: 20px 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
-#monthly-payment-section .payments-table th,
-#monthly-payment-section .payments-table td {
+#monthly-payment-section .payments-history .chart-section h4 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Year Filter in Payment History */
+#monthly-payment-section .filter-year-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 15px 0;
   padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #ddd;
 }
 
-#monthly-payment-section .payments-table th {
-  background-color: #e9ecef;
-  font-weight: bold;
+#monthly-payment-section .filter-year-container label {
+  font-weight: 500;
+  color: #2c3e50;
+  font-size: 0.95rem;
 }
 
-/* Responsive */
+#monthly-payment-section .filter-year-container select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  background: #fff;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+#monthly-payment-section .filter-year-container select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  #monthly-payment-section {
+    padding-left: 280px;
+  }
+}
+
+@media (max-width: 992px) {
+  #monthly-payment-section {
+    padding: 20px;
+  }
+
+  #monthly-payment-section .Title {
+    font-size: 2.2rem;
+  }
+}
+
 @media (max-width: 768px) {
   #monthly-payment-section {
     padding: 15px;
   }
+
   #monthly-payment-section .Title {
     font-size: 2rem;
   }
+
+  #monthly-payment-section .subtitle {
+    font-size: 0.95rem;
+  }
+
+  #monthly-payment-section .title-container {
+    padding: 25px 15px;
+  }
+
+  #monthly-payment-section .search-container,
+  #monthly-payment-section .user-details,
+  #monthly-payment-section .payments-history,
+  #monthly-payment-section .add-payment-container {
+    padding: 20px;
+  }
+
+  #monthly-payment-section .search-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #monthly-payment-section .reg-range-info {
+    justify-content: center;
+    width: 100%;
+  }
+
   #monthly-payment-section .search-form {
     flex-direction: column;
   }
+
+  #monthly-payment-section .search-btn,
+  #monthly-payment-section .clear-search-btn {
+    width: 100%;
+  }
+
+  #monthly-payment-section .details-grid {
+    grid-template-columns: 1fr;
+  }
+
   #monthly-payment-section .months-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-  #monthly-payment-section .details-grid {
-    grid-template-columns: 1fr;
+
+  #monthly-payment-section .payments-table {
+    font-size: 0.85rem;
+  }
+
+  #monthly-payment-section .payments-table th,
+  #monthly-payment-section .payments-table td {
+    padding: 10px 8px;
+  }
+
+  #monthly-payment-section .filter-year-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #monthly-payment-section .filter-year-container select {
+    width: 100%;
+  }
+
+  #monthly-payment-section .payments-history .chart-section {
+    padding: 10px;
+  }
+
+  #monthly-payment-section .payments-history .chart-section h4 {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #monthly-payment-section .Title {
+    font-size: 1.7rem;
+  }
+
+  #monthly-payment-section h3 {
+    font-size: 1.1rem;
+  }
+
+  #monthly-payment-section .months-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #monthly-payment-section .payments-table {
+    font-size: 0.75rem;
+  }
+
+  #monthly-payment-section .payments-table th,
+  #monthly-payment-section .payments-table td {
+    padding: 8px 6px;
+  }
+
+  #monthly-payment-section .submit-btn {
+    width: 100%;
+  }
+}
+
+/* Print Styles */
+@media print {
+  #monthly-payment-section {
+    background: white;
+    padding: 0;
+  }
+
+  #monthly-payment-section .search-container,
+  #monthly-payment-section .add-payment-container {
+    display: none;
+  }
+
+  #monthly-payment-section .title-container {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    border: 2px solid #000 !important;
+  }
+
+  #monthly-payment-section .Title,
+  #monthly-payment-section .subtitle {
+    color: black !important;
+  }
+
+  #monthly-payment-section .payments-table th {
+    background: #f0f0f0 !important;
+    color: black !important;
+    border: 1px solid #000 !important;
+  }
+
+  #monthly-payment-section .payments-table td {
+    border: 1px solid #000 !important;
   }
 }

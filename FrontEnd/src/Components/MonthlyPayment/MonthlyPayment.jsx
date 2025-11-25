@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Nav from '../Nav/Nav';
 import axios from 'axios';
-import './MonthlyPayment.css';  // New CSS file below
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from 'recharts';
+import './MonthlyPayment.css';
 
 const USERS_URL = 'http://localhost:5000/users';
 const PAYMENTS_URL = 'http://localhost:5000/payments';
@@ -10,15 +20,20 @@ function MonthlyPayment() {
   // States
   const [searchRegNo, setSearchRegNo] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
-  const [payments, setPayments] = useState([]); // New state for AddFunds details
+  const [payments, setPayments] = useState([]);
+  const [filteredPayments, setFilteredPayments] = useState([]);
+  const [selectedFilterYear, setSelectedFilterYear] = useState('all');
   const [formData, setFormData] = useState({
-    year: new Date().getFullYear(),  // Default to current year
-    month: [],  // Array of selected month numbers (1-12)
-    cash: 500  // Default to 500
+    year: new Date().getFullYear(),
+    month: [],
+    cash: 500
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [disabledMonths, setDisabledMonths] = useState([]); // New state for disabled months
+  const [disabledMonths, setDisabledMonths] = useState([]);
+  const [monthlyChartData, setMonthlyChartData] = useState([]);
+  const [availableYears, setAvailableYears] = useState(['all']);
+  const [regNoRange, setRegNoRange] = useState({ first: null, last: null }); // NEW STATE
 
   // Month names for display
   const monthNames = [
@@ -44,6 +59,32 @@ function MonthlyPayment() {
       .join(', ');
   };
 
+  // Fetch Reg No Range - NEW useEffect
+  useEffect(() => {
+    const fetchRegNoRange = async () => {
+      try {
+        const res = await axios.get(USERS_URL);
+        const shops = res.data.shops || [];
+        if (shops.length > 0) {
+          const regNumbers = shops
+            .map(shop => parseInt(shop.reg_no))
+            .filter(num => !isNaN(num))
+            .sort((a, b) => a - b);
+          if (regNumbers.length > 0) {
+            setRegNoRange({
+              first: regNumbers[0],
+              last: regNumbers[regNumbers.length - 1]
+            });
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching reg_no range:', err);
+      }
+    };
+    
+    fetchRegNoRange();
+  }, []);
+
   // Compute disabled months based on current year and payments
   useEffect(() => {
     if (payments.length > 0 && formData.year) {
@@ -54,6 +95,62 @@ function MonthlyPayment() {
       setDisabledMonths([]);
     }
   }, [payments, formData.year]);
+
+  // Compute monthly chart data for selected filter year
+  useEffect(() => {
+    if (payments.length > 0 && selectedFilterYear !== 'all') {
+      const filterYear = parseInt(selectedFilterYear);
+      const monthlyTotals = Array(12).fill(0);
+      payments
+        .filter(p => p.year === filterYear)
+        .forEach(p => {
+          p.month.forEach(m => {
+            if (m >= 1 && m <= 12) {
+              monthlyTotals[m - 1] += p.cash || 0;
+            }
+          });
+        });
+      const chartData = monthNames.map((month, idx) => ({
+        month: month.name.substring(0, 3),
+        total: monthlyTotals[idx].toFixed(2)
+      }));
+      setMonthlyChartData(chartData);
+    } else {
+      setMonthlyChartData([]);
+    }
+  }, [payments, selectedFilterYear]);
+
+  // Update available years and set default selected year when payments change
+  useEffect(() => {
+    const currentYear = new Date().getFullYear();
+    if (payments.length > 0) {
+      let uniqueYears = [...new Set(payments.map(p => p.year))];
+      if (!uniqueYears.includes(currentYear)) {
+        uniqueYears.push(currentYear);
+      }
+      uniqueYears = uniqueYears.sort((a, b) => b - a);
+      setAvailableYears(['all', ...uniqueYears]);
+      if (selectedFilterYear === 'all' || !uniqueYears.includes(parseInt(selectedFilterYear))) {
+        setSelectedFilterYear(currentYear.toString());
+      }
+    } else {
+      setAvailableYears(['all', currentYear.toString()]);
+      setSelectedFilterYear(currentYear.toString());
+    }
+  }, [payments]);
+
+  // Filter payments based on selectedFilterYear
+  useEffect(() => {
+    if (payments.length === 0) {
+      setFilteredPayments([]);
+      return;
+    }
+    let filtered = payments;
+    if (selectedFilterYear !== 'all') {
+      filtered = payments.filter(p => p.year === parseInt(selectedFilterYear));
+    }
+    setFilteredPayments(filtered);
+  }, [payments, selectedFilterYear]);
 
   // Fetch payments for a reg_no
   const fetchPayments = async (regNo) => {
@@ -68,6 +165,11 @@ function MonthlyPayment() {
     }
   };
 
+  // Handle filter year change
+  const handleFilterYearChange = (e) => {
+    setSelectedFilterYear(e.target.value);
+  };
+
   // Search user by reg_no
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -80,7 +182,6 @@ function MonthlyPayment() {
       setSelectedUser(res.data.shop);
       setError('');
       setSuccess('');
-      // Fetch payments for this user
       await fetchPayments(searchRegNo);
     } catch (err) {
       setError('Shop not found');
@@ -94,7 +195,12 @@ function MonthlyPayment() {
     setSearchRegNo('');
     setSelectedUser(null);
     setPayments([]);
+    setFilteredPayments([]);
     setDisabledMonths([]);
+    setMonthlyChartData([]);
+    const currentYear = new Date().getFullYear();
+    setAvailableYears(['all', currentYear.toString()]);
+    setSelectedFilterYear(currentYear.toString());
     setFormData({ year: new Date().getFullYear(), month: [], cash: 500 });
     setError('');
     setSuccess('');
@@ -107,7 +213,7 @@ function MonthlyPayment() {
 
   // Handle month toggle (multiple select)
   const handleMonthToggle = (monthId) => {
-    if (disabledMonths.includes(monthId)) return; // Prevent toggle if disabled
+    if (disabledMonths.includes(monthId)) return;
     setFormData(prev => ({
       ...prev,
       month: prev.month.includes(monthId)
@@ -119,7 +225,7 @@ function MonthlyPayment() {
   // Handle cash change
   const handleCashChange = (e) => {
     const value = parseFloat(e.target.value) || 500;
-    setFormData(prev => ({ ...prev, cash: Math.max(500, value) }));  // Min 500
+    setFormData(prev => ({ ...prev, cash: Math.max(500, value) }));
   };
 
   // Submit payment
@@ -142,23 +248,23 @@ function MonthlyPayment() {
       });
       setSuccess('Payment added successfully!');
       setError('');
-      // Reset form but keep user and refetch payments
       setFormData({ year: new Date().getFullYear(), month: [], cash: 500 });
-      await fetchPayments(selectedUser.reg_no); // Refresh payments list
+      await fetchPayments(selectedUser.reg_no);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to add payment');
       setSuccess('');
     }
   };
 
-  // Years dropdown options (2020 to 2026, based on current date Nov 2025)
+  // Years dropdown options
+  const currentYear = new Date().getFullYear();
   const years = [];
-  for (let y = 2020; y <= 2026; y++) {
+  for (let y = currentYear; y <= currentYear + 5; y++) {
     years.push(y);
   }
 
   // Calculate total paid
-  const totalPaid = payments.reduce((sum, p) => sum + (p.cash || 0), 0).toFixed(2);
+  const totalPaid = filteredPayments.reduce((sum, p) => sum + (p.cash || 0), 0).toFixed(2);
 
   // Helper to check if month is disabled
   const isMonthDisabled = (monthId) => disabledMonths.includes(monthId);
@@ -171,9 +277,17 @@ function MonthlyPayment() {
         <p className="subtitle">Manage shop funds and payments</p>
       </div>
 
-      {/* Search Form */}
+      {/* Search Form with Reg No Range - UPDATED */}
       <div className="search-container">
-        <h3>🔍 Search Shop by Reg. No</h3>
+        <div className="search-header">
+          <h3>🔍 Search Shop by Reg. No</h3>
+          {regNoRange.first !== null && regNoRange.last !== null && (
+            <div className="reg-range-info">
+              <span className="range-label">Available Range:</span>
+              <span className="range-value">{regNoRange.first} - {regNoRange.last}</span>
+            </div>
+          )}
+        </div>
         <form onSubmit={handleSearch} className="search-form">
           <input
             type="number"
@@ -222,7 +336,35 @@ function MonthlyPayment() {
         <div className="payments-history">
           <h3>💳 Payment History</h3>
           <p><strong>Total Paid: LKR {totalPaid}</strong></p>
-          {payments.length > 0 ? (
+         
+          <div className="filter-year-container">
+            <label htmlFor="filterYear">Filter by Year: </label>
+            <select id="filterYear" value={selectedFilterYear} onChange={handleFilterYearChange}>
+              {availableYears.map(year => (
+                <option key={year} value={year}>
+                  {year === 'all' ? 'All Years' : year}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {monthlyChartData.length > 0 && monthlyChartData.some(d => parseFloat(d.total) > 0) && (
+            <div className="chart-section">
+              <h4>Monthly Payments Overview - {selectedFilterYear === 'all' ? 'All Years' : selectedFilterYear}</h4>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={monthlyChartData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip formatter={(value) => [`LKR ${value}`, 'Total Cash']} />
+                  <Legend />
+                  <Bar dataKey="total" fill="#3498db" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+
+          {filteredPayments.length > 0 ? (
             <table className="payments-table">
               <thead>
                 <tr>
@@ -233,7 +375,7 @@ function MonthlyPayment() {
                 </tr>
               </thead>
               <tbody>
-                {payments.map((p, idx) => (
+                {filteredPayments.map((p, idx) => (
                   <tr key={idx}>
                     <td>{p.year}</td>
                     <td>{getMonthNames(p.month)}</td>
@@ -244,7 +386,7 @@ function MonthlyPayment() {
               </tbody>
             </table>
           ) : (
-            <p>No payments added yet.</p>
+            <p>No payments for the selected year.</p>
           )}
         </div>
       )}
@@ -267,8 +409,8 @@ function MonthlyPayment() {
               <label>Months (Select Multiple - Calendar View)</label>
               <div className="months-grid">
                 {monthNames.map(month => (
-                  <label 
-                    key={month.id} 
+                  <label
+                    key={month.id}
                     className={`month-checkbox ${formData.month.includes(month.id) ? 'selected' : ''} ${isMonthDisabled(month.id) ? 'disabled' : ''}`}
                     title={isMonthDisabled(month.id) ? 'Already paid for this year' : ''}
                   >
@@ -283,8 +425,8 @@ function MonthlyPayment() {
                 ))}
               </div>
               <small>
-                {formData.month.length > 0 
-                  ? `Selected: ${formData.month.length} months` 
+                {formData.month.length > 0
+                  ? `Selected: ${formData.month.length} months`
                   : 'Select at least one'
                 }
                 {disabledMonths.length > 0 && ` (grayed out months already paid for ${formData.year})`}

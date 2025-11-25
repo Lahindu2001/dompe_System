@@ -20,7 +20,7 @@ function App() {
           <Route path="/Main" element={<AdminPanel />} />
 
           {/* User Management */}
-          <Route path="/sub1" element={<Users />} />
+          <Route path="/add_shop" element={<Users />} />
 
           {/* Monthly Payment Management */}
           <Route path="/MonthlyPayment" element={<MonthlyPayment />} />

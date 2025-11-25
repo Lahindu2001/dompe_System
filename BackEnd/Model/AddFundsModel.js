@@ -10,7 +10,7 @@ const addFundsSchema = new Schema({
     year: { 
         type: Number, 
         required: [true, 'Year is required'],
-        min: [2000, 'Year must be 2000 or later']
+        min: [2025, 'Year must be 2000 or later']
     },
     month: [{ 
         type: Number,  

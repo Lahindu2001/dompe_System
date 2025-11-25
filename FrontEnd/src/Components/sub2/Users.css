@@ -159,10 +159,13 @@
 /* Enhanced Search Bar */
 #users-section .search-bar {
   margin: 20px 0;
+  display: flex;
+  justify-content: center;
 }
 
 #users-section .search-bar input {
   width: 100%;
+  max-width: 650px;
   padding: 12px 16px;
   border: 1px solid #ced4da;
   border-radius: 6px;
@@ -396,30 +399,35 @@
 
 #users-section .add-user-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 #users-section .form-group {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 #users-section .form-group label {
   font-weight: 500;
   color: #495057;
-  margin-bottom: 6px;
-  font-size: 0.9rem;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  display: block;
 }
 
 #users-section .form-group input,
 #users-section .form-group select {
-  padding: 10px 12px;
+  padding: 12px 16px;
   border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
   background: #ffffff;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 #users-section .form-group input:focus,
@@ -429,27 +437,42 @@
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
+#users-section .form-group input[readonly] {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+  border-color: #dee2e6;
+}
+
+#users-section .form-group .error {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  display: block;
+}
+
 #users-section .submit-btn,
 #users-section .add-user-form button[type="submit"] {
   grid-column: 1 / -1;
-  background: #28a745;
+  background: linear-gradient(135deg, #28a745, #20c997);
   color: white;
   border: none;
-  padding: 12px 24px;
+  padding: 14px 32px;
   border-radius: 6px;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   justify-self: center;
   max-width: 200px;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
 }
 
 #users-section .submit-btn:hover,
 #users-section .add-user-form button[type="submit"]:hover {
-  background: #218838;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.25);
+  background: linear-gradient(135deg, #218838, #1ea085);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
 }
 
 /* Update Form */

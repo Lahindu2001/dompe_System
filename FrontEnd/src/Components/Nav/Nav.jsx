@@ -26,7 +26,7 @@ function Nav() {
         
         <li className="home-li">
           <NavLink
-            to="/sub1"
+            to="/add_shop"
             className={({ isActive }) => `home-a ${isActive ? 'active' : ''}`}
           >
             <h1>add the shop</h1>
