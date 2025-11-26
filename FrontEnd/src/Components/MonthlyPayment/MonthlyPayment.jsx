@@ -222,10 +222,16 @@ function MonthlyPayment() {
     }));
   };
 
-  // Handle cash change
+  // Handle cash change - UPDATED to allow free typing, clamp on blur/submit
   const handleCashChange = (e) => {
-    const value = parseFloat(e.target.value) || 500;
-    setFormData(prev => ({ ...prev, cash: Math.max(500, value) }));
+    const value = e.target.value;
+    setFormData(prev => ({ ...prev, cash: value === '' ? 500 : parseFloat(value) || 500 }));
+  };
+
+  const handleCashBlur = (e) => {
+    let value = parseFloat(e.target.value) || 500;
+    value = Math.max(500, value);
+    setFormData(prev => ({ ...prev, cash: value }));
   };
 
   // Submit payment
@@ -239,12 +245,17 @@ function MonthlyPayment() {
       setError('At least one month must be selected');
       return;
     }
+    let cashValue = parseFloat(formData.cash);
+    if (isNaN(cashValue) || cashValue < 500) {
+      setError('Cash amount must be at least 500');
+      return;
+    }
     try {
       const res = await axios.post(PAYMENTS_URL, {
         reg_no: selectedUser.reg_no,
         year: formData.year,
         month: formData.month,
-        cash: formData.cash
+        cash: cashValue
       });
       setSuccess('Payment added successfully!');
       setError('');
@@ -268,6 +279,9 @@ function MonthlyPayment() {
 
   // Helper to check if month is disabled
   const isMonthDisabled = (monthId) => disabledMonths.includes(monthId);
+
+  // Calculate total cash preview
+  const totalCashPreview = (isNaN(parseFloat(formData.cash)) ? 500 : parseFloat(formData.cash)) * formData.month.length;
 
   return (
     <div className="monthly-payment-section" id="monthly-payment-section">
@@ -440,12 +454,21 @@ function MonthlyPayment() {
                 id="cash"
                 min="500"
                 step="0.01"
-                placeholder="Enter amount"
+                placeholder="Enter amount (min 500)"
                 value={formData.cash}
                 onChange={handleCashChange}
+                onBlur={handleCashBlur}
                 required
               />
             </div>
+
+            {/* Total Cash Preview - NEW */}
+            {formData.month.length > 0 && (
+              <div className="total-preview">
+                <strong>Total Cash: LKR {totalCashPreview.toFixed(2)}</strong>
+                <small>(Cash per month × {formData.month.length} months)</small>
+              </div>
+            )}
 
             <button type="submit" className="submit-btn">Add Payment</button>
           </form>
