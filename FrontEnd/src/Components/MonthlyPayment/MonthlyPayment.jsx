@@ -33,7 +33,14 @@ function MonthlyPayment() {
   const [disabledMonths, setDisabledMonths] = useState([]);
   const [monthlyChartData, setMonthlyChartData] = useState([]);
   const [availableYears, setAvailableYears] = useState(['all']);
-  const [regNoRange, setRegNoRange] = useState({ first: null, last: null }); // NEW STATE
+  const [regNoRange, setRegNoRange] = useState({ first: null, last: null });
+  // Edit states
+  const [editingPaymentId, setEditingPaymentId] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    year: '',
+    month: [],
+    cash: ''
+  });
 
   // Month names for display
   const monthNames = [
@@ -59,7 +66,7 @@ function MonthlyPayment() {
       .join(', ');
   };
 
-  // Fetch Reg No Range - NEW useEffect
+  // Fetch Reg No Range
   useEffect(() => {
     const fetchRegNoRange = async () => {
       try {
@@ -87,14 +94,21 @@ function MonthlyPayment() {
 
   // Compute disabled months based on current year and payments
   useEffect(() => {
-    if (payments.length > 0 && formData.year) {
-      const paidForYear = payments.filter(p => p.year === formData.year);
-      const paidMonths = paidForYear.flatMap(p => p.month || []);
-      setDisabledMonths([...new Set(paidMonths)]);
+    if (payments.length > 0) {
+      const currentYear = editingPaymentId ? editFormData.year : formData.year;
+      if (currentYear) {
+        let paidForYear = payments.filter(p => p.year === currentYear);
+        if (editingPaymentId) {
+          // Exclude current editing payment
+          paidForYear = paidForYear.filter(p => p._id !== editingPaymentId);
+        }
+        const paidMonths = paidForYear.flatMap(p => p.month || []);
+        setDisabledMonths([...new Set(paidMonths)]);
+      }
     } else {
       setDisabledMonths([]);
     }
-  }, [payments, formData.year]);
+  }, [payments, formData.year, editFormData.year, editingPaymentId]);
 
   // Compute monthly chart data for selected filter year
   useEffect(() => {
@@ -202,6 +216,8 @@ function MonthlyPayment() {
     setAvailableYears(['all', currentYear.toString()]);
     setSelectedFilterYear(currentYear.toString());
     setFormData({ year: new Date().getFullYear(), month: [], cash: 500 });
+    setEditingPaymentId(null);
+    setEditFormData({ year: '', month: [], cash: '' });
     setError('');
     setSuccess('');
   };
@@ -211,7 +227,7 @@ function MonthlyPayment() {
     setFormData(prev => ({ ...prev, year: parseInt(e.target.value) }));
   };
 
-  // Handle month toggle (multiple select)
+  // Handle month toggle (multiple select) for add
   const handleMonthToggle = (monthId) => {
     if (disabledMonths.includes(monthId)) return;
     setFormData(prev => ({
@@ -222,7 +238,7 @@ function MonthlyPayment() {
     }));
   };
 
-  // Handle cash change - UPDATED to allow free typing, clamp on blur/submit
+  // Handle cash change - for add
   const handleCashChange = (e) => {
     const value = e.target.value;
     setFormData(prev => ({ ...prev, cash: value === '' ? 500 : parseFloat(value) || 500 }));
@@ -234,7 +250,7 @@ function MonthlyPayment() {
     setFormData(prev => ({ ...prev, cash: value }));
   };
 
-  // Submit payment
+  // Submit payment - add
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedUser) {
@@ -267,6 +283,87 @@ function MonthlyPayment() {
     }
   };
 
+  // Edit functions
+  const startEdit = (payment) => {
+    setEditingPaymentId(payment._id);
+    setEditFormData({
+      year: payment.year,
+      month: [...payment.month],
+      cash: payment.cash
+    });
+  };
+
+  const handleEditYearChange = (e) => {
+    setEditFormData(prev => ({ ...prev, year: parseInt(e.target.value) }));
+  };
+
+  const handleEditMonthToggle = (monthId) => {
+    // For edit, allow all, no disable
+    setEditFormData(prev => ({
+      ...prev,
+      month: prev.month.includes(monthId)
+        ? prev.month.filter(m => m !== monthId)
+        : [...prev.month, monthId]
+    }));
+  };
+
+  const handleEditCashChange = (e) => {
+    const value = e.target.value;
+    setEditFormData(prev => ({ ...prev, cash: value === '' ? payment.cash : parseFloat(value) || payment.cash }));
+  };
+
+  const handleEditCashBlur = (e) => {
+    let value = parseFloat(e.target.value) || 500;
+    value = Math.max(500, value);
+    setEditFormData(prev => ({ ...prev, cash: value }));
+  };
+
+  const handleUpdatePayment = async (e) => {
+    e.preventDefault();
+    if (editFormData.month.length === 0) {
+      setError('At least one month must be selected');
+      return;
+    }
+    let cashValue = parseFloat(editFormData.cash);
+    if (isNaN(cashValue) || cashValue < 500) {
+      setError('Cash amount must be at least 500');
+      return;
+    }
+    try {
+      await axios.put(`${PAYMENTS_URL}/${editingPaymentId}`, {
+        year: editFormData.year,
+        month: editFormData.month,
+        cash: cashValue
+      });
+      setSuccess('Payment updated successfully!');
+      setError('');
+      setEditingPaymentId(null);
+      setEditFormData({ year: '', month: [], cash: '' });
+      await fetchPayments(selectedUser.reg_no);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to update payment');
+      setSuccess('');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingPaymentId(null);
+    setEditFormData({ year: '', month: [], cash: '' });
+  };
+
+  const handleDeletePayment = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this payment?')) return;
+    try {
+      await axios.delete(`${PAYMENTS_URL}/${id}`);
+      setSuccess('Payment deleted successfully!');
+      setError('');
+      await fetchPayments(selectedUser.reg_no);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to delete payment');
+      setSuccess('');
+    }
+  };
+
   // Years dropdown options
   const currentYear = new Date().getFullYear();
   const years = [];
@@ -274,13 +371,13 @@ function MonthlyPayment() {
     years.push(y);
   }
 
-  // Calculate total paid
-  const totalPaid = filteredPayments.reduce((sum, p) => sum + (p.cash || 0), 0).toFixed(2);
+  // Calculate total paid - cash * month count per payment
+  const totalPaid = filteredPayments.reduce((sum, p) => sum + ((p.cash || 0) * (p.month ? p.month.length : 0)), 0).toFixed(2);
 
-  // Helper to check if month is disabled
-  const isMonthDisabled = (monthId) => disabledMonths.includes(monthId);
+  // Helper to check if month is disabled - only for add
+  const isMonthDisabled = (monthId) => !editingPaymentId && disabledMonths.includes(monthId);
 
-  // Calculate total cash preview
+  // Calculate total cash preview for add
   const totalCashPreview = (isNaN(parseFloat(formData.cash)) ? 500 : parseFloat(formData.cash)) * formData.month.length;
 
   return (
@@ -291,7 +388,7 @@ function MonthlyPayment() {
         <p className="subtitle">Manage shop funds and payments</p>
       </div>
 
-      {/* Search Form with Reg No Range - UPDATED */}
+      {/* Search Form with Reg No Range */}
       <div className="search-container">
         <div className="search-header">
           <h3>🔍 Search Shop by Reg. No</h3>
@@ -384,17 +481,105 @@ function MonthlyPayment() {
                 <tr>
                   <th>Year</th>
                   <th>Months</th>
-                  <th>Cash (LKR)</th>
+                  <th>Cash per Month (LKR)</th>
+                  <th>Total for Months (LKR)</th>
                   <th>Added On</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredPayments.map((p, idx) => (
-                  <tr key={idx}>
-                    <td>{p.year}</td>
-                    <td>{getMonthNames(p.month)}</td>
-                    <td>{p.cash.toFixed(2)}</td>
-                    <td>{new Date(p.created_at).toLocaleDateString('en-GB')}</td>
+                  <tr key={p._id || idx}>
+                    {editingPaymentId === p._id ? (
+                      <td colSpan="6">
+                        <div className="edit-payment-container">
+                          <h4>✏️ Edit Payment</h4>
+                          <form onSubmit={handleUpdatePayment}>
+                            <div className="edit-form-row">
+                              <div className="form-group small">
+                                <label htmlFor="editYear">Year</label>
+                                <select 
+                                  id="editYear" 
+                                  value={editFormData.year} 
+                                  onChange={handleEditYearChange} 
+                                  required
+                                >
+                                  {years.map(y => (
+                                    <option key={y} value={y}>{y}</option>
+                                  ))}
+                                </select>
+                              </div>
+                              <div className="form-group small">
+                                <label htmlFor="editCash">Cash per Month (Min 500)</label>
+                                <input
+                                  type="number"
+                                  id="editCash"
+                                  min="500"
+                                  step="0.01"
+                                  placeholder="Enter amount (min 500)"
+                                  value={editFormData.cash}
+                                  onChange={handleEditCashChange}
+                                  onBlur={handleEditCashBlur}
+                                  required
+                                />
+                              </div>
+                            </div>
+                            <div className="form-group">
+                              <label>Months (Select Multiple)</label>
+                              <div className="months-grid">
+                                {monthNames.map(month => (
+                                  <label
+                                    key={month.id}
+                                    className={`month-checkbox ${editFormData.month.includes(month.id) ? 'selected' : ''}`}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      checked={editFormData.month.includes(month.id)}
+                                      onChange={() => handleEditMonthToggle(month.id)}
+                                    />
+                                    {month.name}
+                                  </label>
+                                ))}
+                              </div>
+                              <small>
+                                {editFormData.month.length > 0
+                                  ? `Selected: ${editFormData.month.length} months`
+                                  : 'Select at least one'
+                                }
+                              </small>
+                            </div>
+                            <div className="edit-buttons">
+                              <button type="submit" className="update-btn">✅ Update Payment</button>
+                              <button type="button" className="cancel-button" onClick={handleCancelEdit}>❌ Cancel</button>
+                            </div>
+                          </form>
+                        </div>
+                      </td>
+                    ) : (
+                      <>
+                        <td>{p.year}</td>
+                        <td>{getMonthNames(p.month)}</td>
+                        <td>{p.cash ? p.cash.toFixed(2) : '0.00'}</td>
+                        <td>{((p.cash || 0) * (p.month ? p.month.length : 0)).toFixed(2)}</td>
+                        <td>{new Date(p.created_at).toLocaleDateString('en-GB')}</td>
+                        <td className="actions-cell">
+                          <button 
+                            className="action-btn edit-btn" 
+                            onClick={() => startEdit(p)} 
+                            title="Edit Payment"
+                          >
+                            ✏️
+                          </button>
+                          <button 
+                            className="action-btn delete-btn" 
+                            onClick={() => handleDeletePayment(p._id)} 
+                            title="Delete Payment"
+                          >
+                            🗑️
+                          </button>
+                        </td>
+                      </>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -448,13 +633,13 @@ function MonthlyPayment() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="cash">Cash Amount (Min 500)</label>
+              <label htmlFor="cash">Cash Amount per Month (Min 500)</label>
               <input
                 type="number"
                 id="cash"
                 min="500"
                 step="0.01"
-                placeholder="Enter amount (min 500)"
+                placeholder="Enter amount per month (min 500)"
                 value={formData.cash}
                 onChange={handleCashChange}
                 onBlur={handleCashBlur}
@@ -462,7 +647,7 @@ function MonthlyPayment() {
               />
             </div>
 
-            {/* Total Cash Preview - NEW */}
+            {/* Total Cash Preview */}
             {formData.month.length > 0 && (
               <div className="total-preview">
                 <strong>Total Cash: LKR {totalCashPreview.toFixed(2)}</strong>

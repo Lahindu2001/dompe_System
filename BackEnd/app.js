@@ -28,7 +28,7 @@ app.use("/funds", fundsRouter); // New route
 
 // ------------------- DATABASE -------------------
 mongoose
-  .connect("mongodb+srv://adminSelfme:P40YIFy04Am8rnDe@cluster0.4bp3tta.mongodb.net/sho")
+  .connect("mongodb+srv://adminSelfme:P40YIFy04Am8rnDe@cluster0.4bp3tta.mongodb.net/shop")
   .then(() => console.log("✅ Connected to MongoDB"))
   .then(() => {
     app.listen(5000, () => console.log("🚀 Server running on port 5000"));
