@@ -4,7 +4,8 @@ import axios from 'axios';
 import jsPDF from 'jspdf';
 import './Users.css';
 
-const URL = 'http://localhost:5000/users';
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const URL = `${API}/users`;
 
 
 function Users() {

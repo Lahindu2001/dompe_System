@@ -13,8 +13,9 @@ import {
 } from 'recharts';
 import "./Admin.css";
 
-const USERS_URL = 'http://localhost:5000/users';
-const FUNDS_URL = 'http://localhost:5000/funds';
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const USERS_URL = `${API}/users`;
+const FUNDS_URL = `${API}/funds`;
 
 function Admin() {
   const navigate = useNavigate();

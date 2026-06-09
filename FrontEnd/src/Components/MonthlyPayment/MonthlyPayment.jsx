@@ -13,8 +13,9 @@ import {
 } from 'recharts';
 import './MonthlyPayment.css';
 
-const USERS_URL = 'http://localhost:5000/users';
-const PAYMENTS_URL = 'http://localhost:5000/payments';
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const USERS_URL = `${API}/users`;
+const PAYMENTS_URL = `${API}/payments`;
 
 function MonthlyPayment() {
   // States

@@ -5,7 +5,8 @@ import axios from 'axios';
 import jsPDF from 'jspdf';
 import './FundsManagement.css';
 
-const URL = 'http://localhost:5000/funds'; // Matches new backend endpoint
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const URL = `${API}/funds`; // Matches new backend endpoint
 
 function FundsManagement() {
   // ------------------- STATES -------------------
