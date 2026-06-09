@@ -18,7 +18,7 @@ This repository is structured as a monorepo containing:
 
 ### Backend
 * **Hosting Platform**: [Railway](https://railway.app/)
-* **URL**: `https://dompesystem-production.up.railway.app`
+* **URL**: `https://system.up.railway.app`
 * **Container Port**: Configured to run on port `5000` (or dynamically assigned by Railway via `process.env.PORT`)
 * **Database**: MongoDB Atlas Cluster
 
