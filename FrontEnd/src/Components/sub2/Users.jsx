@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Nav from '../Nav/Nav';
 import axios from 'axios';
 import jsPDF from 'jspdf';
@@ -10,6 +11,21 @@ const URL = `${API}/users`;
 
 function Users() {
   // ------------------- STATES -------------------
+  const navigate = useNavigate();
+  const [notification, setNotification] = useState({ message: '', type: '' });
+  const [toastTimeout, setToastTimeout] = useState(null);
+
+  const showNotification = (message, type) => {
+    if (toastTimeout) {
+      clearTimeout(toastTimeout);
+    }
+    setNotification({ message, type });
+    const timeout = setTimeout(() => {
+      setNotification({ message: '', type: '' });
+    }, 3000);
+    setToastTimeout(timeout);
+  };
+
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFields, setSelectedFields] = useState({
@@ -451,11 +467,11 @@ function Users() {
       setInputs({ reg_no: '', shop_owner_name: '', shop_name: '', phone_number: '' });
       setAddPhoneError('');
       setShowAddUserForm(false);
-      alert('User added successfully!');
-      window.location.reload();
+      showNotification('User added successfully!', 'success');
+      navigate('/add_shop');
     } catch (err) {
       console.error('Error adding user:', err);
-      alert('Failed to add user!');
+      showNotification('Failed to add user!', 'error');
     }
   };
   // Auto-set next Reg. No when showing add form
@@ -497,11 +513,11 @@ function Users() {
       setEditingUserId(null);
       setEditInputs({ reg_no: '', shop_owner_name: '', shop_name: '', phone_number: '' });
       setEditPhoneError('');
-      alert('User updated successfully!');
-      window.location.reload();
+      showNotification('User updated successfully!', 'success');
+      navigate('/add_shop');
     } catch (err) {
       console.error('Error updating user:', err);
-      alert('Failed to update user!');
+      showNotification('Failed to update user!', 'error');
     }
   };
   // ------------------- DELETE USER -------------------
@@ -510,10 +526,11 @@ function Users() {
     try {
       await axios.delete(`${URL}/${id}`);
       setUsers(users.filter(u => u._id !== id));
-      alert('User deleted successfully!');
+      showNotification('User deleted successfully!', 'success');
+      navigate('/add_shop');
     } catch (err) {
       console.error('Error deleting user:', err);
-      alert('Failed to delete user!');
+      showNotification('Failed to delete user!', 'error');
     }
   };
   // ------------------- DOWNLOAD FUNCTIONS -------------------
@@ -530,6 +547,11 @@ function Users() {
   return (
     <div className="users-section" id="users-section">
       <Nav />
+      {notification.message && (
+        <div className={`notification-toast ${notification.type}`}>
+          {notification.type === 'success' ? '✅' : '❌'} {notification.message}
+        </div>
+      )}
       <div className="title-container">
         <h2 className="Title">Add the shop to the Systems</h2>
         <p className="subtitle">{companyInfo.name} - {companyInfo.tagline}</p>
