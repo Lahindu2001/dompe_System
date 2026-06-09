@@ -44,7 +44,7 @@ This repository is structured as a monorepo containing:
 
 ## 📡 API Specification
 
-All API endpoints are prefixed with the base API URL (e.g., `https://dompesystem-production.up.railway.app`).
+All API endpoints are prefixed with the base API URL (e.g., `https://system.up.railway.app`).
 
 ### 1. Shop Owner Accounts (`/users`)
 Handles shop registration, profile updates, and search queries.
@@ -81,7 +81,7 @@ Before running the application locally or deploying to staging, make sure to con
 ### Frontend Environment Setup (`FrontEnd/.env`)
 Create a `.env` file inside the `FrontEnd` directory:
 ```env
-VITE_API_URL=https://dompesystem-production.up.railway.app
+VITE_API_URL=https://system.up.railway.app
 ```
 
 ### Backend Environment Setup (`BackEnd/.env`)
