@@ -272,7 +272,7 @@ function Users() {
         x += colWidths.shop_name;
         doc.text(truncate(user.phone_number, 20), x, y + 6);
         x += colWidths.phone;
-        doc.text(new Date(user.created_at).toLocaleDateString('en-GB'), x, y + 6);
+        doc.text(user.created_at ? new Date(user.created_at).toLocaleDateString('en-GB') : 'N/A', x, y + 6);
 
         y += 9;
       });
@@ -341,8 +341,8 @@ function Users() {
         { label: 'Shop Owner Name', value: user.shop_owner_name },
         { label: 'Shop Name', value: user.shop_name },
         { label: 'Phone Number', value: user.phone_number },
-        { label: 'Created Date', value: new Date(user.created_at).toLocaleDateString('en-GB') },
-        { label: 'Created Time', value: new Date(user.created_at).toLocaleTimeString('en-GB', { hour12: false }) }
+        { label: 'Created Date', value: user.created_at ? new Date(user.created_at).toLocaleDateString('en-GB') : 'N/A' },
+        { label: 'Created Time', value: user.created_at ? new Date(user.created_at).toLocaleTimeString('en-GB', { hour12: false }) : 'N/A' }
       ];
 
       // Draw details table
@@ -405,9 +405,9 @@ function Users() {
       doc.setDrawColor(220, 220, 220);
       doc.rect(startX, y, tableWidth, 25);
 
-      doc.text('This shop record was created on ' + new Date(user.created_at).toLocaleDateString('en-GB', { 
+      doc.text('This shop record was created on ' + (user.created_at ? new Date(user.created_at).toLocaleDateString('en-GB', { 
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-      }), startX + 5, y + 8);
+      }) : 'N/A'), startX + 5, y + 8);
       doc.text('For any updates or inquiries, please contact the administration.', startX + 5, y + 16);
 
       addFooter(1, 1);
@@ -447,7 +447,7 @@ function Users() {
     }
     try {
       const res = await axios.post(URL, { ...inputs });
-      setUsers([...users, res.data]);
+      setUsers([...users, res.data.shop]);
       setInputs({ reg_no: '', shop_owner_name: '', shop_name: '', phone_number: '' });
       setAddPhoneError('');
       setShowAddUserForm(false);
@@ -493,7 +493,7 @@ function Users() {
     }
     try {
       const res = await axios.put(`${URL}/${editingUserId}`, { ...editInputs });
-      setUsers(users.map(u => (u._id === editingUserId ? res.data : u)));
+      setUsers(users.map(u => (u._id === editingUserId ? res.data.shop : u)));
       setEditingUserId(null);
       setEditInputs({ reg_no: '', shop_owner_name: '', shop_name: '', phone_number: '' });
       setEditPhoneError('');
@@ -648,7 +648,7 @@ function Users() {
                     <td>{user.shop_owner_name}</td>
                     <td>{user.shop_name}</td>
                     <td>{user.phone_number}</td>
-                    <td>{new Date(user.created_at).toLocaleDateString('en-GB')}</td>
+                    <td>{user.created_at ? new Date(user.created_at).toLocaleDateString('en-GB') : 'N/A'}</td>
                     <td className="actions-cell">
                       <button className="action-btn edit-btn" onClick={() => startEdit(user)} title="Edit User">
                         ✏️
